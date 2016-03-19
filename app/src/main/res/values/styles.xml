@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="textview_label" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">85sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#d1d1d1</item>
+        <item name="android:antialias">true</item>
+        <item name="android:gravity">top|right</item>
+    </style>
+</resources>
