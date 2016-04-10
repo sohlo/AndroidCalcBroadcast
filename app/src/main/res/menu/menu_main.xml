@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ee.calculator.MainActivity">
+    <item
+        android:id="@+id/action_calculations"
+        android:orderInCategory="100"
+        android:title="@string/action_calculations"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_calc_stats"
+        android:orderInCategory="100"
+        android:title="@string/action_calc_stats"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_calc_type"
+        android:orderInCategory="100"
+        android:title="@string/action_calc_type"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_clear"
+        android:orderInCategory="100"
+        android:title="@string/action_clear"
+        app:showAsAction="never" />
+</menu>

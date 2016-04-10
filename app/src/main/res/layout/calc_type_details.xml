@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+    <TextView
+        android:id="@+id/labeltypeinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="10dp"
+        android:text="Tehet "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/operandType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/labeltypeinfo"
+        android:layout_toEndOf="@id/labeltypeinfo"
+        android:paddingLeft="10dp"
+        android:text="+"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/labeltypeinfo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/operandType"
+        android:layout_toEndOf="@id/operandType"
+        android:paddingLeft="10dp"
+        android:text="on kasutatud: "
+        android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
+
+    <TextView
+        android:id="@+id/typeLifetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/labeltypeinfo2"
+        android:layout_toEndOf="@id/labeltypeinfo2"
+        android:paddingLeft="2dp"
+        android:text="42"
+        android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
+
+    <TextView
+        android:id="@+id/labeltypeinfo3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/typeLifetime"
+        android:layout_toEndOf="@id/typeLifetime"
+        android:paddingLeft="2dp"
+        android:text="korda"
+        android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
+
+
+</RelativeLayout>

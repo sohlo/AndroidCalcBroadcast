@@ -148,24 +148,28 @@ public class CalculatorEngine {
     }
 
     public void calculateResult() {
-        double midResult = 0;
-        double x = 0;
-        double y = 0;
+        float midResult = 0;
+        float x = 0;
+        float y = 0;
         //this.inputArray.add(currentNumber);
 
         while (inputArray.size() > 1) {
 
-            x = Double.parseDouble(inputArray.get(0));
-            y = Double.parseDouble(inputArray.get(2));
-
-            if (inputArray.get(1).equals("-")) {
+            x = Float.parseFloat(inputArray.get(0));
+            y = Float.parseFloat(inputArray.get(2));
+            String operand = inputArray.get(1);
+            if (operand.equals("-")) {
                 midResult = x - y;
-            } else if (inputArray.get(1).equals("+")) {
+                CalculatorReceiver.saveStat(x, y, midResult, operand);
+            } else if (operand.equals("+")) {
                 midResult = x + y;
-            } else if (inputArray.get(1).equals("/")) {
+                CalculatorReceiver.saveStat(x, y, midResult, operand);
+            } else if (operand.equals("/")) {
                 midResult = x / y;
-            } else if (inputArray.get(1).equals("*")) {
+                CalculatorReceiver.saveStat(x, y, midResult, operand);
+            } else if (operand.equals("*")) {
                 midResult = x * y;
+                CalculatorReceiver.saveStat(x, y, midResult, operand);
             }
             int j = 0;
             while (j <= 2) {

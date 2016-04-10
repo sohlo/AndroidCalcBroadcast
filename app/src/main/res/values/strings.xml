@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CalculatorReceiver</string>
+    <string name="action_calculations">Vaata arvutusi</string>
+    <string name="action_calc_stats">Vaata päevastatistikat</string>
+    <string name="action_calc_type">Vaata tehtestatistikat</string>
+    <string name="action_clear">Puhasta andmed</string>
 
 </resources>
