@@ -33,7 +33,7 @@ public class CalculationStatsAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        CalculationStats calculations = uow.statsRepo.cursorToEntity(cursor);
+        CalculationStats calculations = uow.calculationStatsRepo.cursorToEntity(cursor);
         displayTypeView(view, context, calculations);
     }
 
@@ -46,14 +46,14 @@ public class CalculationStatsAdapter extends CursorAdapter {
         calcListView.removeAllViews();
 
         for (CalculationStats stats :
-                uow.statsRepo.getStatList(calculationStats.getId())) {
+                uow.calculationStatsRepo.getStatList(calculationStats.getId())) {
 
             // load the xml structure of your row
             View child = layoutInflater.inflate(R.layout.calculation_stats_details, parentViewGroup, false);
 
             TextView textViewOperand = (TextView) child.findViewById(R.id.operandsType);
             TextView textViewStatCounter = (TextView) child.findViewById(R.id.statCounter);
-            String operand = uow.typesRepo.getById(stats.getOperandId()).getOperand();
+            String operand = uow.calculationTypesRepo.getById(stats.getOperandId()).getOperand();
             textViewOperand.setText(String.format("%s", operand));
             textViewStatCounter.setText(String.format("%s", stats.getDayCounter()));
 

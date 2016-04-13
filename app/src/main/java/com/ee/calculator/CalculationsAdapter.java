@@ -40,7 +40,7 @@ public class CalculationsAdapter extends CursorAdapter {
 
         //TextView textViewName = (TextView) view.findViewById(R.id.calcName);
 
-        Calculations calculations = uow.calcRepo.cursorToEntity(cursor);
+        Calculations calculations = uow.calculationsRepo.cursorToEntity(cursor);
 
         displayTypeView(view, context, calculations);
     }
@@ -55,7 +55,7 @@ public class CalculationsAdapter extends CursorAdapter {
         calcListView.removeAllViews();
 
         for (Calculations calc :
-                uow.calcRepo.getCalcList(calculations.getId())) {
+                uow.calculationsRepo.getCalcList(calculations.getId())) {
 
             // load the xml structure of your row
             View child = layoutInflater.inflate(R.layout.calculations_details, parentViewGroup, false);
@@ -64,7 +64,8 @@ public class CalculationsAdapter extends CursorAdapter {
             TextView textViewCalcRes = (TextView) child.findViewById(R.id.calcResult);
             TextView textViewCalcTimestamp = (TextView) child.findViewById(R.id.calcTimestamp);
 
-            String operand = uow.typesRepo.getById(calculations.getOperationId()).getOperand();
+            uow.calculationTypesRepo.getOperandById(calculations.getOperandId());
+            String operand = uow.calculationTypesRepo.getById(calculations.getOperandId()).getOperand();
 
             textViewOperation.setText(String.format("%s%s%s", calculations.getNum1(), operand, calculations.getNum2()));
             textViewCalcRes.setText(String.format("%s", calc.getRes()));

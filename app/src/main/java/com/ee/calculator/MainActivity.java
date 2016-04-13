@@ -1,23 +1,24 @@
 package com.ee.calculator;
 
-import android.database.Cursor;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import java.sql.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static UOW uow;
-    private static CalculationTypesAdapter typesAdapter;
+    private static CalculationTypesAdapter calculationTypesAdapter;
     private static CalculationsAdapter calculationsAdapter;
     private static CalculationStatsAdapter calculationsStatsAdapter;
+    private static int currentview = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,107 +34,79 @@ public class MainActivity extends AppCompatActivity {
 
         //uow.renewDatabase();
         //uow.seedData();
-        notifyAdapters();
+        updateListviews();
+        displayCalcListView();
+        displayStatsListView();
         displayTypesListView();
     }
 
     private void displayTypesListView() {
-        typesAdapter = new CalculationTypesAdapter(this, uow.typesRepo.getCursorAll(), uow);
+        calculationTypesAdapter = new CalculationTypesAdapter(this, uow.calculationTypesRepo.getCursorAll(), uow);
 
         ListView listView = (ListView) findViewById(R.id.list);
 
         // Assign adapter to ListView
-        // listview will iterate over adapter, and get filled subview for every row
-        listView.setAdapter(typesAdapter);
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> listView, View view,
-                                    int position, long id) {
-                // Get the cursor, positioned to the corresponding row in the result set
-                Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-
-                // Get the id
-                String dbid =
-                        cursor.getString(cursor.getColumnIndexOrThrow("_id"));
-                Toast.makeText(getApplicationContext(),
-                        dbid, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
+        listView.setAdapter(calculationTypesAdapter);
+        currentview = 0;
+    }//view 0
 
     private void displayCalcListView() {
-        calculationsAdapter = new CalculationsAdapter(this, uow.calcRepo.getCursorAll(), uow);
+        calculationsAdapter = new CalculationsAdapter(this, uow.calculationsRepo.getCursorAll(), uow);
 
         ListView listView = (ListView) findViewById(R.id.list);
 
         // Assign adapter to ListView
-        // listview will iterate over adapter, and get filled subview for every row
         listView.setAdapter(calculationsAdapter);
+        currentview = 1;
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> listView, View view,
-                                    int position, long id) {
-                // Get the cursor, positioned to the corresponding row in the result set
-                Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-
-                // Get the id
-                String dbid =
-                        cursor.getString(cursor.getColumnIndexOrThrow("_id"));
-                Toast.makeText(getApplicationContext(),
-                        dbid, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
+    }// view 1
 
     private void displayStatsListView() {
-        calculationsStatsAdapter = new CalculationStatsAdapter(this, uow.statsRepo.getCursorAll(), uow);
+        calculationsStatsAdapter = new CalculationStatsAdapter(this, uow.calculationStatsRepo.getCursorAll(), uow);
 
         ListView listView = (ListView) findViewById(R.id.list);
 
         // Assign adapter to ListView
-        // listview will iterate over adapter, and get filled subview for every row
         listView.setAdapter(calculationsStatsAdapter);
+        currentview = 2;
 
-    }
+
+    }// view 2
 
     public static void updateDB() {
-        long operandId = uow.typesRepo.getIdFromOperand(CalculatorReceiver.getOperand());
+        String operand = CalculatorReceiver.getOperand();
+        uow.calculationTypesRepo.updateTypeUsage(operand);
 
-        uow.typesRepo.updateTypeUsage(CalculatorReceiver.getOperand());
-        if (operandId == -1) {
-            CalculationType newType = new CalculationType();
-            newType.setOperand(CalculatorReceiver.getOperand());
-            newType.setLifetimeCounter(1);
-            uow.typesRepo.add(newType);
+        long operandId = uow.calculationTypesRepo.getIdFromOperand(CalculatorReceiver.getOperand());
+        CalculationStats calculationStatsUsage = new CalculationStats();
+        if (uow.calculationStatsRepo.updateStatsUsage(operandId) == -1) {
+            //tegu on puuduva operandiga või uue kuuga
+            calculationStatsUsage.setDayCounter(1);
+            Date date = new Date(System.currentTimeMillis());
+            long millis = date.getTime();
+            calculationStatsUsage.setDaystamp(millis);
+            uow.calculationTypesRepo.addNewTypeUsage(operand);
+            //lisada uue operand andmebaasi ja selle id võtmine uuesti
+            calculationStatsUsage.setOperandId(uow.calculationTypesRepo.getIdFromOperand(operand));
+            uow.calculationStatsRepo.add(calculationStatsUsage);
         }
-        notifyAdapters();
-        uow.statsRepo.updateStatsUsage(operandId);
+
 
 //        Calculations calc = new Calculations();
 //        calc.setNum1(CalculatorReceiver.getX());
 //        calc.setNum2(CalculatorReceiver.getY());
 //        calc.setRes(CalculatorReceiver.getRes());
-//        calc.setOperationId(operandId);
-//        calc.setTimestamp();
-//        CalculationStats stats = new CalculationStats();
-//        stats.setOperandId(operandId);
-//        //stats.set();
-//        uow.statsRepo.updateStatsUsage(operandId);
-        //uow.calcRepo.add(calc);
+//        calc.setOperandId(operandId);
+//        Date date = new Date(System.currentTimeMillis());
+//        long timestamp = date.getTime();
+//        calc.setTimestamp(timestamp);
+//        uow.calculationsRepo.add(calc);
 
-        notifyAdapters();
     }
 
     @Override
     protected void onResume() {
-        displayTypesListView();
-        notifyAdapters();
+        updateListviews();
         super.onResume();
     }
 
@@ -168,13 +141,27 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_calc_type) {
             displayTypesListView();
-            typesAdapter.notifyDataSetChanged();
+            calculationTypesAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_clear) {
-            uow.renewDatabase();
-            uow.seedData();
-            notifyAdapters();
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setTitle("Kas kustutada andmebaasi informatsioon?")
+                    .setMessage("Olete kindel?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Jah", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            uow.renewDatabase();
+                            uow.seedData();
+                            updateListviews();
+                        }
+                    })
+                    .setNegativeButton("Ei", null)
+                    .show();
+            updateListviews();
 
             return true;
         }
@@ -182,13 +169,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void notifyAdapters() {
-        try {
-            calculationsAdapter.notifyDataSetChanged();
-            calculationsStatsAdapter.notifyDataSetChanged();
-            typesAdapter.notifyDataSetChanged();
-        } catch (Exception e) {
-
+    public void updateListviews() {
+        if (currentview == 0) {
+            displayTypesListView();
+        } else if (currentview == 1) {
+            displayCalcListView();
+        } else {
+            displayStatsListView();
         }
     }
 

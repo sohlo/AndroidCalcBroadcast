@@ -12,8 +12,6 @@ public class CalculatorEngine {
 
     private static final String TAG = "CalculatorEngine";
     private static double calcResult;
-
-
     private static String currentNumber = "";
     private static boolean lastInserted;
     private static boolean showingResult = false;

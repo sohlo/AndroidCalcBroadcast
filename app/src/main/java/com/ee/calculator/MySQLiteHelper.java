@@ -42,9 +42,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CALCULATIONS_CREATE = "create table " + TABLE_CALCULATIONS
             + "(" + CALCULATIONS_COLUMN_ID + " integer primary key autoincrement, "
             + CALCULATIONS_COLUMN_CALCULATION_TYPE_ID + " integer,"
-            + CALCULATIONS_COLUMN_NUM_1 + " real not null,"
-            + CALCULATIONS_COLUMN_NUM_2 + " real not null,"
-            + CALCULATIONS_COLUMN_RESULT + " real not null,"
+            + CALCULATIONS_COLUMN_NUM_1 + " real,"
+            + CALCULATIONS_COLUMN_NUM_2 + " real,"
+            + CALCULATIONS_COLUMN_RESULT + " real,"
             + CALCULATIONS_COLUMN_TIMESTAMP + " integer);";
 
     private static final String DATABASE_CALC_TYPE_CREATE = "create table " + TABLE_CALCULATION_TYPES

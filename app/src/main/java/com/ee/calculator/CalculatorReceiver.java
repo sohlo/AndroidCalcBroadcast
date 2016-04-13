@@ -53,8 +53,8 @@ public class CalculatorReceiver extends BroadcastReceiver {
         CalculatorReceiver.currentNumber = currentNumber;
     }
 
-    public void setShow(String show) {
-        CalculatorReceiver.screenText = show;
+    public void setScreentext(String screentext) {
+        CalculatorReceiver.screenText = screentext;
     }
 
     @Override
@@ -62,11 +62,20 @@ public class CalculatorReceiver extends BroadcastReceiver {
         if (isOrderedBroadcast()) {
             Bundle extras = intent.getExtras();
             String symbol;
+            boolean isRestoringState;
             if (extras != null) {
                 symbol = extras.getString("insertedButton");
-                solver.checkBtn(symbol);
+                isRestoringState = extras.getBoolean("restoreState");
+                if (isRestoringState) {
+                    String state = extras.getString("savedCalculation");
+                    if (state != null)
+                        solver.clear();
+                    solver.setStringToArray(state);
+                } else {
+                    solver.checkBtn(symbol);
+                }
             }
-            setShow(solver.getDisplayText());
+            setScreentext(solver.getDisplayText());
             setCurrentNumber(solver.getCurrentNumber());
             setResultData(screenText + currentNumber);
             setResultCode(Activity.RESULT_OK);

@@ -19,11 +19,11 @@ public class Calculations implements IEntity {
         this.id = id;
     }
 
-    public long getOperationId() {
+    public long getOperandId() {
         return this.operandId;
     }
 
-    public void setOperationId(long operationdId) {
+    public void setOperandId(long operationdId) {
         this.operandId = operationdId;
     }
 

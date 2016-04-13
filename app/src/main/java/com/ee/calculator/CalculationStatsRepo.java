@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -55,15 +54,13 @@ public class CalculationStatsRepo extends Repo<CalculationStats> {
         return listOfEntity;
     }
 
-    public void updateStatsUsage(long operandId) {
-
+    public int updateStatsUsage(long operandId) {
+        int i = 0;
         Cursor cursor = getDatabase().query(getTablename(),
                 getAllColumns(), "operandId = '" + operandId + "'", null, null, null, null);
 
         cursor.moveToFirst();
 
-        Date date = new Date(System.currentTimeMillis());
-        long millis = date.getTime();
 
         if (!cursor.isAfterLast()) {
             CalculationStats entity = cursorToEntity(cursor);
@@ -83,18 +80,16 @@ public class CalculationStatsRepo extends Repo<CalculationStats> {
                 update(entity);
                 counter = 0;
             } else if (dateSaved.get(Calendar.DAY_OF_MONTH) < day) {
-                entity.setDaystamp(millis);
-                entity.setOperandId(operandId);
-                add(entity);
+                i = -1;
+                //kuupäev on muutunud, tuleb uus sisestus teha
             }
+
         } else {
-            CalculationStats newStat = new CalculationStats();
-            newStat.setDaystamp(millis);
-            newStat.setDayCounter(1);
-            newStat.setOperandId(operandId);
-            add(newStat);
+            //pole sellist tehet varem tehtud
+            i = -1;
         }
         cursor.close();
 
+        return i;
     }
 }

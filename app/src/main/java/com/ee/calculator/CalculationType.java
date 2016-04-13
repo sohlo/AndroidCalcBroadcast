@@ -34,7 +34,7 @@ public class CalculationType implements IEntity {
 
     @Override
     public String toString() {
-        return String.format("%s %d", operand, lifetimeCounter);
+        return String.format("%s %s", operand, lifetimeCounter);
     }
 
 }

@@ -19,7 +19,7 @@ public class CalculationsRepo extends Repo<Calculations> {
     public Calculations cursorToEntity(Cursor cursor) {
         Calculations calculations = new Calculations();
         calculations.setId(cursor.getLong(0));
-        calculations.setOperationId(cursor.getLong(1));
+        calculations.setOperandId(cursor.getLong(1));
         calculations.setNum1(cursor.getFloat(2));
         calculations.setNum2(cursor.getFloat(3));
         calculations.setRes(cursor.getFloat(4));
@@ -30,7 +30,7 @@ public class CalculationsRepo extends Repo<Calculations> {
     @Override
     public ContentValues entityToContentValues(Calculations entity) {
         ContentValues values = new ContentValues();
-        values.put(getAllColumns()[1], entity.getOperationId());
+        values.put(getAllColumns()[1], entity.getOperandId());
         values.put(getAllColumns()[2], entity.getNum1());
         values.put(getAllColumns()[3], entity.getNum2());
         values.put(getAllColumns()[3], entity.getRes());

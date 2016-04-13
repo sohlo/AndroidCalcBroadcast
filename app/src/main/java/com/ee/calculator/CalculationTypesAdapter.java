@@ -40,7 +40,7 @@ public class CalculationTypesAdapter extends CursorAdapter {
 
         //TextView textViewName = (TextView) view.findViewById(R.id.typeName);
         // vb nii teha et on + ja siis all kellaajad mil kasutatud?
-        CalculationType calculationType = uow.typesRepo.cursorToEntity(cursor);
+        CalculationType calculationType = uow.calculationTypesRepo.cursorToEntity(cursor);
         //textViewName.setText(calculationType.getOperandsCount());
         displayTypeView(view, context, calculationType);
     }
@@ -55,7 +55,7 @@ public class CalculationTypesAdapter extends CursorAdapter {
         typesListView.removeAllViews();
 
         for (CalculationType type :
-                uow.typesRepo.getTypeList(calculationType.getId())) {
+                uow.calculationTypesRepo.getTypeList(calculationType.getId())) {
 
             // load the xml structure of your row
             View child = layoutInflater.inflate(R.layout.calc_type_details, parentViewGroup, false);
